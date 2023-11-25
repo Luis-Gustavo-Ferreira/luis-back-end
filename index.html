@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h2>Teste</h2>
+  <form>
+    <input class="buttonTeste" type="text" />
+    <input type="button" onclick="teste()"/>
+    <span class="mensagem-sucesso"></span>
+    <a href="/categorias">Categorias</a>
+    <span class="limparForm" onclick="limparForm()">Limpar categorias</span>
+  </form>
+
+  <script>
+    const teste = () => {
+      const value = document.querySelector('.buttonTeste').value
+
+      fetch('/categorias', {
+          method: "POST",
+          headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({"nome": value})
+      })
+      .then(res => res.json())
+      .then(response => {
+        document.querySelector('.mensagem-sucesso').innerText = "Nova categoria adicionada"
+        setTimeout(() => {
+          document.querySelector('.mensagem-sucesso').innerText = ""
+        }, 2000);
+        console.log(response)
+      })
+    }
+    const limparForm = () => {
+      fetch('/categorias/clear')
+      .then(res => res.json())
+      .then(response => {
+        document.querySelector('.limparForm').innerText = "Categorias limpas"
+        setTimeout(() => {
+          document.querySelector('.limparForm').innerText = "Limpar categorias"
+        }, 2000);
+      })
+    }
+  </script>
+</body>
+</html>
